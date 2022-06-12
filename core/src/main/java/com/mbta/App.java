@@ -1,6 +1,10 @@
 package com.mbta;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Scanner;
 
 import org.json.simple.JSONArray;
@@ -23,9 +27,10 @@ public class App
     static ArrayList<Route> routes = new ArrayList<Route>();
     static ArrayList<ArrayList<Stop>> stops = new ArrayList<ArrayList<Stop>>();
     static Wrapper wrapper;
+    static HashMap<String, ArrayList<String>> connectingStops = new HashMap<>();
 
 
-    public static void main( String[] args )
+    public static void main( String[] args ) throws Exception
     {
         //Wrapper mbtaWrapper = new Wrapper("https://api-v3.mbta.com");
         wrapper = new Wrapper();
@@ -45,7 +50,7 @@ public class App
 
 
 
-    static void initialize() {
+    static void initialize() throws Exception {
         System.out.println("Initializing...\n");
 
         getRoutes();
@@ -72,7 +77,8 @@ public class App
         }
     }
 
-    static void getStops() {
+    //TODO PUT ACTUAL OBJECT IN connectingStops
+    static void getStops() throws Exception {
         for (int i = 0; i < routes.size(); i++) {
             stops.add(new ArrayList<Stop>());
 
@@ -85,7 +91,9 @@ public class App
                 JSONObject o = (JSONObject) arr.get(i);
                 JSONObject o1 = (JSONObject) o.get("attributes");
                 //System.out.println(o.get("id").toString());// + ", " + o1.get("long_name").toString())
-                stops.get(i).add(new Stop(o.get("id").toString(), o1.get("name").toString(), currRoute));
+                String stopID = o.get("id").toString();
+                stops.get(i).add(new Stop(stopID, o1.get("name").toString(), currRoute));
+                addConnectingStop(stopID, currRoute);
             }
         }
 
@@ -94,6 +102,54 @@ public class App
         }        
     }
 
+    static void addConnectingStop(String stopID, String route1) throws Exception {
+        if (connectingStops.containsKey(stopID)) {
+            //TODO: add functionality for stops that connect 3 lines
+            String route2 = connectingStops.get(stopID).get(0);
+
+            int indx1 = 0, indx2 = 0;
+            try {
+                indx1 = getRouteIndex(route1);
+                indx2 = getRouteIndex(route2);
+            } catch (IOException e) {
+                System.out.println("addConnectingStop: Route ID not found in route");
+                System.exit(0);
+            }
+
+            routes.get(indx1).addConnectingStop(route2, stopID);
+            routes.get(indx2).addConnectingStop(route1, stopID);
+        } else {
+            System.out.println(route1 + " " + stopID);
+            ArrayList<String> arr = new ArrayList<String>();
+            arr.add(route1);
+            connectingStops.put(stopID, arr);
+        }
+    }
+
+    static void printConnectingStops() {
+        Iterator<Map.Entry<String, ArrayList<String>>> itr = connectingStops.entrySet().iterator();
+          
+        while(itr.hasNext())
+        {
+             Map.Entry<String, ArrayList<String>> entry = itr.next();
+             ArrayList<String> arr = entry.getValue();
+             System.out.println(entry.getKey() + ": ");
+             for (int i = 0; i < arr.size() - 1; i++) {
+                System.out.println(arr.get(i) + ", ");
+             }
+             System.out.println(arr.get(arr.size() - 1) + "\n");
+        }
+    }
+
+    static int getRouteIndex(String routeID) throws Exception {
+        for (int i = 0; i < routes.size(); i++) {
+            if (routes.get(i).getID().equals(routeID)) {
+                return i;
+            }
+        }
+        throw new Exception("addConnectingStop: Route ID not found in route");
+    }
+    
     static void decode(String s, Model m) {
         switch(s) {
             case "o":
@@ -112,7 +168,7 @@ public class App
                 break;
 
             case "2.3":
-                //c.getConnectingStops();
+                printConnectingStops();
                 break;
 
             case "3":
