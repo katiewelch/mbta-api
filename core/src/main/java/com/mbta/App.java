@@ -193,7 +193,7 @@ public class App
                 String departing = in.nextLine();
                 System.out.println("Enter arriving stop: ");
                 String arriving = in.nextLine();
-               // System.out.println(c.getDirections(departing, arriving));
+               System.out.println(m.getDirections(departing, arriving, routes, stops));
                 break;
 
             default:
