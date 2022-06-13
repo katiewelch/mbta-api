@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class Route {
     String name;
     String id;
-    HashMap<String, ArrayList<String>> connectingStops;
+    HashMap<Route, ArrayList<String>> connectingStops;
 
     public Route(String n, String ID) {
         name = n;
@@ -22,13 +22,13 @@ public class Route {
         return connectingStops.get(route);
     } 
 
-    public void addConnectingStop(String routeID, String stopID) {
-        if (connectingStops.containsKey(routeID)) {
-            connectingStops.get(routeID).add(stopID);
+    public void addConnectingStop(Route route, Stop stop) {
+        if (connectingStops.containsKey(route)) {
+            connectingStops.get(route).add(stop.getName());
         } else {
             ArrayList<String> arr = new ArrayList<String>();
-            arr.add(stopID);
-            connectingStops.put(routeID, arr);
+            arr.add(stop.getName());
+            connectingStops.put(route, arr);
         }
     }
 }
