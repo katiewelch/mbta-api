@@ -61,4 +61,19 @@ public class Route {
     public ArrayList<String> getConnectingStopValue(Route route) {
         return connectingStops.get(route);
     } 
+
+    /* 
+     * Overriding equals method to compare by value rather than object
+     * Mostly used for testing purposed
+     */ 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) { return true; }
+
+        if (!(o instanceof Route)) { return false; }
+
+        Route r = (Route) o;
+
+        return this.getName().equals(r.getName()) && this.getID().equals(r.getID()); 
+    } 
 }

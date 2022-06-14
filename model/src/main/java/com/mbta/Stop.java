@@ -1,5 +1,7 @@
 package com.mbta;
 
+import javax.print.DocFlavor.STRING;
+
 /*
  * Class that represents MBTA stop
  *  * id (String) - the id of the stop from the API
@@ -22,4 +24,19 @@ public class Stop {
     public String getName() { return name; }
 
     public String getRouteID() { return routeID; }
+
+    /* 
+     * Overriding equals method to compare by value rather than object
+     * Mostly used for testing purposed
+     */ 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) { return true; }
+
+        if (!(o instanceof Stop)) { return false; }
+
+        Stop s = (Stop) o;
+
+        return this.getName().equals(s.getName()) && this.getID().equals(s.getID()) && this.getRouteID().equals(s.getRouteID()); 
+    } 
 }

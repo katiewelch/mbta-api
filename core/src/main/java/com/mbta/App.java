@@ -50,7 +50,7 @@ public class App
     //command line interface
     static void decode(String s, Model m) {
         switch(s) {
-            case "o":
+            case "o": //print options
                 System.out.println(options);
                 break;
 
@@ -81,7 +81,7 @@ public class App
 
             default: //incorrect input
                 System.out.println("Incorrect entry -- Please try again. Enter 'o' for options");
-
+                break;
         }
     }
 }

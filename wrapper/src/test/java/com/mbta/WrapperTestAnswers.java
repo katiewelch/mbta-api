@@ -22,5 +22,5 @@ public class WrapperTestAnswers {
     Arrays.asList("Ashmont", "Cedar Grove", "Butler", "Milton", "Central Avenue", "Valley Road", "Capen Street", "Mattapan"));
 
   ArrayList<String> mattapanStopsIDAns = new ArrayList<String>(
-    Arrays.asList("place-asmnl", "place-cedgr", "place-butler", "place-miltt", "place-cenav", "place-valrd", "place-capst", "place-matt"));
+    Arrays.asList("place-asmnl", "place-cedgr", "place-butlr", "place-miltt", "place-cenav", "place-valrd", "place-capst", "place-matt"));
 }
