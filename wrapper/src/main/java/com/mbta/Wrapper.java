@@ -2,14 +2,17 @@ package com.mbta;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+/*
+ * Class that communicates with MBTA API and recieves and returns (route and stop) data
+ *  * baseURL (String) - url of MBTA API with no request information
+ *  * apiKey (String) - Katie Welch's API key for MBTA API
+ */
 public class Wrapper {
- 
     private String baseURL;
     private String apiKey;
 
@@ -18,21 +21,37 @@ public class Wrapper {
         apiKey = "b925076dae244748b86d02f4e02baac8";
     }
 
+    /*
+     * pulls all Light (type 0) and Heavy (Type 1) routes on MBTA
+     * is called from Core which will hold all route data
+     * should only be called once
+     */
     public JSONObject getRoutes() {
         String routeFooter = "/routes?filter%5Btype%5D=0%2C1";
         return request(routeFooter);
     }
 
+    /*
+     * pulls all stops on Light (type 0) and Heavy (Type 1) routes on MBTA
+     * is called from Core which will hold all route data
+     * should only be called once
+     */
     public JSONObject getStops(String routeID) {
         String stopFooter = "/stops?include=route&filter%5Broute%5D=" + routeID;
         return request(stopFooter);
     }
 
+    /*
+     * method that makes requests to API
+     *  * url (String) is string that should be appended to baseURL and specifies GET request and filters
+     */
     public JSONObject request(String url) {
         JSONObject dataObj = null;
+
         try {
             URL urlObj = new URL(baseURL + url);
 
+            //api request specifications
             HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();
             conn.setRequestProperty("Authorization", apiKey);
             conn.setRequestProperty("Content-Type", "application/json; utf-8");
@@ -40,16 +59,17 @@ public class Wrapper {
             conn.connect();
 
             int responsecode = conn.getResponseCode();
-
+            //TODO still need?
+            //code for too many requests, wait and try again
             while (responsecode == 429) {
+                //TODO add wait()
                 conn.connect();
                 responsecode = conn.getResponseCode();
             }
 
-            if (responsecode != 200) {
+            if (responsecode != 200) { //failure code
                 throw new RuntimeException("HttpResponseCode: " + responsecode);
             } else {
-                
                 String inline = "";
                 Scanner sc = new Scanner(urlObj.openStream());
 
@@ -64,9 +84,8 @@ public class Wrapper {
                 dataObj = (JSONObject) parse.parse(inline);
                 return dataObj;
             }
-
-
         } catch (Exception e) {
+            //If class cannot communicate with API
             e.printStackTrace();
         }
         //TODO: should never get here, should this be null?

@@ -1,0 +1,24 @@
+MBTA API
+
+overview
+This program communicates with the MBTA's API to 
+
+parts
+core
+    app
+    core
+model
+    model
+    route
+    stop
+wrapper
+
+how to run
+
+questions
+1
+2
+    2.1
+    2.2
+    2.3
+3
