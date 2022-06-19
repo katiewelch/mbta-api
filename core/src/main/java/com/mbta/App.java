@@ -109,11 +109,15 @@ public class App
         {
              Map.Entry<String, ArrayList<Route>> entry = itr.next();
              ArrayList<Route> arr = entry.getValue();
-             System.out.println(entry.getKey() + ": ");
-             for (int i = 0; i < arr.size() - 1; i++) {
-                System.out.print(arr.get(i).getName() + ", ");
-             }
-             System.out.println(arr.get(arr.size() - 1).getName() + "\n");
+
+             //only print stops that are on two or more routes
+             if (arr.size() > 1) {
+                System.out.println(entry.getKey() + ": ");
+                for (int i = 0; i < arr.size() - 1; i++) {
+                    System.out.print(arr.get(i).getName() + ", ");
+                }
+                System.out.println(arr.get(arr.size() - 1).getName() + "\n");
+            }
         }
     }
 }

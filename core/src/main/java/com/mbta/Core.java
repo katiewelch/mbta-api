@@ -13,22 +13,18 @@ import org.json.simple.JSONObject;
  *  * routes (ArrayList<Route>) - list of all Light (type 0) and Heavy (type 1) rails held in Route class with name, id, and connections
  *  * stops (ArrayList<ArrayList<Stop>>) - matrix of all stops. stops are organized by route, where index of each route matches index of each route matches index in routes variable
  *  * connectingStops (HashMap<String, ArrayList<Route>>) - map of all stops that connect 2 or more routes, mapped with ArrayList of routes they are on
- * TODO * stopsMap (HashMap<String, ArrayList<Route>>) -
  *  * wrapper (Wrapper) - instance of class that communicates with MBTA API
  */
 public class Core {
     ArrayList<Route> routes;
     ArrayList<ArrayList<Stop>> stops;
     HashMap<String, ArrayList<Route>> connectingStops;
-    //TODO is this necessary? its the same strucutre as above, think it should just be Route, not ArrayList<Route>
-    HashMap<String, ArrayList<Route>> stopsMap;
     static Wrapper wrapper;
     
     public Core() {
         routes = new ArrayList<Route>();
         stops = new ArrayList<ArrayList<Stop>>();
         connectingStops = new HashMap<>();
-        stopsMap = new HashMap<>();
         wrapper = new Wrapper();
     }
 
@@ -80,9 +76,9 @@ public class Core {
      * When connecting stop is found, connection is added to each respective route, and to the connentingStops map
      */
     void addConnectingStop(Stop stop, Route route1){
-        if (stopsMap.containsKey(stop.getName())) {
+        if (connectingStops.containsKey(stop.getName())) {
             //TODO: add functionality for stops that connect 3 lines
-            Route route2 = stopsMap.get(stop.getName()).get(0);
+            Route route2 = connectingStops.get(stop.getName()).get(0);
 
             //each respective route's index in route variable, index is used to find route's stops in stops matrix
             int indx1 = getRouteIndex(route1);
@@ -93,25 +89,17 @@ public class Core {
                 return;
             }
 
-
             //update route object to hold route it connects to and stop that connects them
             routes.get(indx1).addConnectingStop(route2, stop);
             routes.get(indx2).addConnectingStop(route1, stop);
 
             //following functionality allows for one stop to connect 3 or more routes
-            if (connectingStops.containsKey(stop.getName())) {
-                connectingStops.get(stop.getName()).add(route1);
-            } else {
-                ArrayList<Route> r = new ArrayList<Route>();
-                r.add(route1);
-                r.add(route2);
-                connectingStops.put(stop.getName(), r);
-            }
+            connectingStops.get(stop.getName()).add(route1);
         } else {
             //if stop has not already been seen, add current route to object
             ArrayList<Route> arr = new ArrayList<Route>();
             arr.add(route1);
-            stopsMap.put(stop.getName(), arr);
+            connectingStops.put(stop.getName(), arr);
         }
     }
 
