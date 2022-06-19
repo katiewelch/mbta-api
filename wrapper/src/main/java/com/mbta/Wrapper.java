@@ -59,10 +59,9 @@ public class Wrapper {
             conn.connect();
 
             int responsecode = conn.getResponseCode();
-            //TODO still need?
-            //code for too many requests, wait and try again
+
+            //code for too many requests, try again
             while (responsecode == 429) {
-                //TODO add wait()
                 conn.connect();
                 responsecode = conn.getResponseCode();
             }
@@ -87,10 +86,7 @@ public class Wrapper {
         } catch (Exception e) {
             //If class cannot communicate with API
             e.printStackTrace();
+            throw new RuntimeException("Could not communicate with MBTA API, please try again");
         }
-        //TODO: should never get here, should this be null?
-        if (dataObj == null)
-            throw new RuntimeException("oops");
-        return dataObj;
-    }   
+    }  
 }
