@@ -2,8 +2,6 @@ package com.mbta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Iterator;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -37,6 +35,8 @@ public class Core {
     ArrayList<Route> getRoutes() { return routes; }
 
     ArrayList<ArrayList<Stop>> getStops() { return stops; }
+
+    HashMap<String, ArrayList<Route>> getConnectingStops() { return connectingStops; }
 
     //parses route data pulled from API by wrapper, saves data in routes variable as Route object with name and id
     void parseRoutes() {
@@ -112,26 +112,6 @@ public class Core {
             ArrayList<Route> arr = new ArrayList<Route>();
             arr.add(route1);
             stopsMap.put(stop.getName(), arr);
-        }
-    }
-
-    /*
-     * function for App class to communicate with command line 
-     * prints connection stop, along with routes that it connects
-     * TODO can this be moved to app class?
-     */
-    void printConnectingStops() {
-        Iterator<Map.Entry<String, ArrayList<Route>>> itr = connectingStops.entrySet().iterator();
-          
-        while(itr.hasNext())
-        {
-             Map.Entry<String, ArrayList<Route>> entry = itr.next();
-             ArrayList<Route> arr = entry.getValue();
-             System.out.println(entry.getKey() + ": ");
-             for (int i = 0; i < arr.size() - 1; i++) {
-                System.out.print(arr.get(i).getName() + ", ");
-             }
-             System.out.println(arr.get(arr.size() - 1).getName() + "\n");
         }
     }
 
