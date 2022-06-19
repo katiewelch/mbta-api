@@ -21,8 +21,7 @@ public class App
     static String input;
 
 
-    public static void main( String[] args ) throws Exception
-    {
+    public static void main( String[] args ) {
         model = new Model();
         core = new Core();
 
@@ -40,7 +39,7 @@ public class App
 
     //Pulls route and stop information for Light (type 0) and Heavy (type 1) rails
     //data will be saved in core to be accessed on demand
-    static void initialize() throws Exception {
+    static void initialize() {
         System.out.println("Initializing...\n");
 
         core.parseRoutes();
@@ -76,7 +75,18 @@ public class App
                 String departing = in.nextLine();
                 System.out.println("Enter arriving stop: ");
                 String arriving = in.nextLine();
-               System.out.println(m.getDirections(departing, arriving, core.getRoutes(), core.getStops()));
+
+                Route dRoute = core.getRouteByStopName(departing);
+                Route aRoute = core.getRouteByStopName(arriving);
+                if (dRoute == null) {
+                    System.out.println("Departing route not found, please check spelling and try again");
+                    return;
+                }
+                if (aRoute == null) {
+                    System.out.println("Arriving route not found, please check spelling and try again");
+                    return;
+                }
+                System.out.println(departing + " to " + arriving + m.getDirections(dRoute, aRoute));
                 break;
 
             default: //incorrect input

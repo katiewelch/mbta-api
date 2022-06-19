@@ -1,6 +1,5 @@
 package com.mbta;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,9 +54,8 @@ public class Core {
     //TODO PUT ACTUAL OBJECT IN connectingStops
     /* parses stop data pulled from API by wrapper, saves data in stops variable as Stop with name, id, and route it's on
      *      if a stop is on two routes, it will be saved as two separate objects, with connection info saved in connectingStops variable as well as each route
-     * throws Exception if TODO
     */
-    void parseStops() throws Exception {
+    void parseStops() {
         for (int i = 0; i < routes.size(); i++) {
             stops.add(new ArrayList<Stop>());
 
@@ -81,20 +79,20 @@ public class Core {
     /*
      * When connecting stop is found, connection is added to each respective route, and to the connentingStops map
      */
-    void addConnectingStop(Stop stop, Route route1) throws Exception {
+    void addConnectingStop(Stop stop, Route route1){
         if (stopsMap.containsKey(stop.getName())) {
             //TODO: add functionality for stops that connect 3 lines
             Route route2 = stopsMap.get(stop.getName()).get(0);
 
             //each respective route's index in route variable, index is used to find route's stops in stops matrix
-            int indx1 = 0, indx2 = 0;
-            try {
-                indx1 = getRouteIndex(route1);
-                indx2 = getRouteIndex(route2);
-            } catch (IOException e) {
-                System.out.println("addConnectingStop: Route ID not found in route");
-                System.exit(0);
+            int indx1 = getRouteIndex(route1);
+            int indx2 = getRouteIndex(route2);
+
+            if (indx1 == -1 || indx2 == -1) {
+                System.out.println("addConnectingStop: Route ID not found in route. Please try again");
+                return;
             }
+
 
             //update route object to hold route it connects to and stop that connects them
             routes.get(indx1).addConnectingStop(route2, stop);
@@ -141,15 +139,29 @@ public class Core {
      * returns index of given route in route variable
      * if no route is found, returns -1. calling method with be aborted, user will get error and have ability to select new option
      * index can be used to find given route's stop in stops matrix
-     * TODO return -1
      */
-    int getRouteIndex(Route route) throws Exception {
+    int getRouteIndex(Route route) {
         for (int i = 0; i < routes.size(); i++) {
             if (routes.get(i).getID().equals(route.getID())) {
                 return i;
             }
         }
-        //TODO have this return -1, and update other methods to respond accordingly which is to just go back to options
-        throw new Exception("addConnectingStop: Route ID not found in route");
+        return -1;
+    }
+
+    /*
+     * Returns the route that matches the given routeName parameter
+     * This is used to match routes to user input
+     */
+    Route getRouteByStopName(String stopName) {
+        System.out.println(stopName);
+        for (int i = 0; i < stops.size(); i++) {
+            for (int j = 0; j < stops.get(i).size(); j++) {
+                if (stops.get(i).get(j).getName().equals(stopName)) {
+                    return routes.get(i);
+                }
+            }
+        }
+        return null;
     }
 }
