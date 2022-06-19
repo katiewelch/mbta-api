@@ -15,6 +15,7 @@ public class Route {
     String name;
     String id;
     //TODO i don't think this needs to be a list of Strings for the stops
+    //TODO also why does the route need this, it can be found in the core class, or the core class doesn't need it, probs the latter
     HashMap<Route, ArrayList<String>> connectingStops;
 
     public Route(String n, String ID) {
@@ -43,7 +44,8 @@ public class Route {
     //determines if given route is connected to this route
     public boolean connectsTo(Route r) {
         Iterator<Entry<Route, ArrayList<String>>> itr = connectingStops.entrySet().iterator();
-          
+    //TODO what should it do if it is given itself? probably return true, but what happens if someone sends that route to getConneccitngSTops() -- bad stuff
+
         while(itr.hasNext())
         {
             if (itr.next().getKey().getName().equals(r.getName())) {

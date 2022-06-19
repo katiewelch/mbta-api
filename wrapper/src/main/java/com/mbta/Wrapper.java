@@ -45,11 +45,11 @@ public class Wrapper {
      * method that makes requests to API
      *  * url (String) is string that should be appended to baseURL and specifies GET request and filters
      */
-    public JSONObject request(String url) {
+    public JSONObject request(String footer) {
         JSONObject dataObj = null;
 
         try {
-            URL urlObj = new URL(baseURL + url);
+            URL urlObj = new URL(baseURL + footer);
 
             //api request specifications
             HttpURLConnection conn = (HttpURLConnection) urlObj.openConnection();

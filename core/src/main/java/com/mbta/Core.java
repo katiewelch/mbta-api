@@ -23,7 +23,7 @@ public class Core {
     ArrayList<Route> routes;
     ArrayList<ArrayList<Stop>> stops;
     HashMap<String, ArrayList<Route>> connectingStops;
-    //TODO is this necessary? its the same strucutre as above
+    //TODO is this necessary? its the same strucutre as above, think it should just be Route, not ArrayList<Route>
     HashMap<String, ArrayList<Route>> stopsMap;
     static Wrapper wrapper;
     
@@ -120,6 +120,7 @@ public class Core {
     /*
      * function for App class to communicate with command line 
      * prints connection stop, along with routes that it connects
+     * TODO can this be moved to app class?
      */
     void printConnectingStops() {
         Iterator<Map.Entry<String, ArrayList<Route>>> itr = connectingStops.entrySet().iterator();
@@ -140,6 +141,7 @@ public class Core {
      * returns index of given route in route variable
      * if no route is found, returns -1. calling method with be aborted, user will get error and have ability to select new option
      * index can be used to find given route's stop in stops matrix
+     * TODO return -1
      */
     int getRouteIndex(Route route) throws Exception {
         for (int i = 0; i < routes.size(); i++) {
