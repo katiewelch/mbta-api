@@ -1,6 +1,8 @@
 package com.mbta;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
 
 /*
  * Class that does computations of all (route and stop) data
@@ -49,11 +51,20 @@ public class Model {
      */
     public String getDirections(Route d, Route a) {
         if (d.equals(a)) { //if they are on the same route, just return route
-            return d.getName() + " to " + a + " --> " + d.getName();
+            return " --> " + d.getName();
         } else if (d.connectsTo(a)) {
             return " --> " + d.getName() + ", " + a.getName();
+        } else {
+            Iterator<Map.Entry<Route, ArrayList<String>>> itr = d.getConnectingStops().entrySet().iterator();
+            
+            while(itr.hasNext())
+            {
+                Route r = itr.next().getKey();
+                if (a.connectsTo(r)) {
+                    return " --> " + d.getName() + ", " + r.getName() + ", " + a.getName();
+                }
+            }
         }
-        //TODO fix and add functionality for 3 line trips also change this string
         return "";
     }
 }

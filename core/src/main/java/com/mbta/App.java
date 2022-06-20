@@ -81,12 +81,8 @@ public class App
 
                 Route dRoute = core.getRouteByStopName(departing);
                 Route aRoute = core.getRouteByStopName(arriving);
-                if (dRoute == null) {
-                    System.out.println("Departing route not found, please check spelling and try again");
-                    return;
-                }
-                if (aRoute == null) {
-                    System.out.println("Arriving route not found, please check spelling and try again");
+                if (dRoute == null || aRoute == null) {
+                    System.out.println("Route not found, please check spelling and try again");
                     return;
                 }
                 System.out.println(departing + " to " + arriving + m.getDirections(dRoute, aRoute));
