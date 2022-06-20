@@ -111,7 +111,7 @@ public class App
              ArrayList<Route> arr = entry.getValue();
 
              //only print stops that are on two or more routes
-             if (arr.size() > 1) {
+            if (arr.size() > 1) {
                 System.out.println(entry.getKey() + ": ");
                 for (int i = 0; i < arr.size() - 1; i++) {
                     System.out.print(arr.get(i).getName() + ", ");

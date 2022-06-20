@@ -47,7 +47,6 @@ public class Core {
         }
     }
 
-    //TODO PUT ACTUAL OBJECT IN connectingStops
     /* parses stop data pulled from API by wrapper, saves data in stops variable as Stop with name, id, and route it's on
      *      if a stop is on two routes, it will be saved as two separate objects, with connection info saved in connectingStops variable as well as each route
     */

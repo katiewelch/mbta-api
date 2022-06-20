@@ -45,8 +45,7 @@ public class Model {
     }
 
     /* 
-     * determines which routes to take to get from d (given departure stop) to a (given arrival stop)
-     * d and a are given as strings representing the stop's name TODO change to id?
+     * determines which routes to take to get from d (route from given departure stop) to a (route from given arrival stop)
      */
     public String getDirections(Route d, Route a) {
         if (d.equals(a)) { //if they are on the same route, just return route
