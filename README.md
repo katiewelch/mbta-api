@@ -6,6 +6,8 @@ This program communicates with the [MBTA's](https://mbta.com/) [API](https://api
 ## Project Setup
 This program was built as a multi-module maven project. Each module has its own functionality, separate from other modules. The Wrapper module's function is to interact with the API and return the correct data to the other modules. The Model contains most of the main functionality of the program by analyzing and computing the data based on the available command line options. The Core acts as the controller mediating communication between itself, the user, the model, and the wrapper. Because of this, the Core has dependencies for the model and the wrapper in its pom.xml file.
 
+![Class Diagram](~/Downloads/MBTAClassDiagram.png)
+
 ### Core
 The core package of this project acts as the controller of the program. It contains two classes, the App and the Core and mediates communication between the user and the body of the program: Model and Wrapper.
 
