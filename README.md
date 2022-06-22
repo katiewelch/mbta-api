@@ -4,11 +4,13 @@
 This program communicates with the [MBTA's](https://mbta.com/) [API](https://api-v3.mbta.com/docs/swagger/index.html#/) to parse data and create a command line interface where users can get information regarding routes and stops.
 
 ## Project Setup
+This program was built as a multi-module maven project. Each module has its own functionality, separate from other modules. The Wrapper module's function is to interact with the API and return the correct data to the other modules. The Model contains most of the main functionality of the program by analyzing and computing the data based on the available command line options. The Core acts as the controller mediating communication between itself, the user, the model, and the wrapper. Because of this, the Core has dependencies for the model and the wrapper in its pom.xml file.
+
 ### Core
-The core package of this project acts as the controller of the program. It mediates communication between the user and the body of the program: Model and Wrapper.
+The core package of this project acts as the controller of the program. It contains two classes, the App and the Core and mediates communication between the user and the body of the program: Model and Wrapper.
 
 **App** <br>
-The App class contains the main method as well as two other methods, one that gets and parses through the API data and one that communicate with the user
+The App class contains the main method as well as two other methods, one that gets and parses through the API data and one that communicate with the user.
 
 *main( String[] args)* <br>
 The main method creates instances of the Model and Core classes, prints a message to the user, and initializes the data in the program. It contains a while loop that constantly scans for user input on the command line, and sends the input to the decode(String s, Model m) method to be properly dealt with.
@@ -28,7 +30,7 @@ The decode method deals with all command line input from the user. The command l
 > o: Show options <br>
 > e: Exit
 
-The method runs a switch loop that calls the correct method in either the core (fetch data) or the model (compute data) and prints out the answer to the command line. If an incorrect option is entered, the user will get an error message and can input a new option code.
+The method runs a switch loop that calls the correct method in either the Core (fetch data) or the Model (compute data) and prints out the answer to the command line. If an incorrect option is entered, the user will get an error message and can input a new option code.
 
 **Core** <br>
 The Core and App classes work together to act as a controller for the program. The App class focuses on the front end and communicating between the user and the program while the Core acts as the main controller for the backend mediating communication between the data, the Wrapper (API), and the Model.
@@ -65,10 +67,6 @@ The class also holds a HashMap<Route, ArrayList<String>>. This is updated when C
 ***Stop*** <br>
 This class represents an MBTA stop. It holds the name and ID of the stop as well as the route that it is on. Similarly, to the route class, it was limited to information that was needed for this program but can be extended in the Wrapper class. If a stop is found twice, it is considered a connecting stop because it is on two routes. Each route will have a separate instance of the stop. Each stop instance will have the same name and ID, but different route IDs.
 
-
-## Development
-This program was built as a multi-module maven project. Each module has its own functionality, separate from other modules. The Wrapper module's function is to interact with the API and return the correct data to the other modules. The Model contains most of the main functionality of the program by analyzing and computing the data based on the available command line options. The Core acts as the controller mediating communication between itself, the user, the model, and the wrapper. Because of this, the Core has dependencies for the model and the wrapper in its pom.xml file.
-
 ## Questions
 ***Question 1*** <br>
 > Write a program that retrieves data representing all, what we'll call > "subway" routes: "Light Rail" (type 0) and “Heavy Rail” (type 1). The > program should list their “long names” on the console.
@@ -79,7 +77,7 @@ This program was built as a multi-module maven project. Each module has its own 
 are received
 > Please document your decision and your reasons for it.
 
-The first command line option allows the user to see a list of all Light and Heavy Routes on the MBTA. I decided to go with the second option of having the API filter the results. The reason for this was efficiency. As there are 5 different types of routes, it would like be a large amount of data to download and then parse through.
+The first command line option allows the user to see a list of all Light and Heavy Routes on the MBTA. I decided to go with the second option of having the API filter the results. The reason for this was efficiency. If I chose the first option, I would have to download and parse a much larger amount of data and then add in an additional step filtering out only the correct types. By relying on the server to filter, I limit the amount of data  transfered and reduce the computation time.
 
 ***Question 2*** <br>
 > Extend your program so it displays the following additional information.
@@ -94,10 +92,10 @@ The second question mostly relies on analyzing the data that was received within
 Since every stop is saved within a 2d array in the Core, the methods for these questions simply loop through the outer array comparing each of the sizes for the inner arrays determining which is the largest and the smallest.
 
 *2.3* <br>
-As with the first two parts, most of the functionality for this question is set up during initialization. As stops are being parsed, their stop ID is added to a Hashmap. If their ID already exists in the map, the stop, and both routes are updated to hold this information. When the user asks to see this information, the program simply prints out the information saved within the Hashmap.
+As with the first two parts, most of the functionality for this question is set up during initialization. As stops are being parsed, their stop ID is added to a Hashmap. If their ID already exists in the map, the stop, and both routes are updated to hold information about the connection. When the user asks to see this information, the program simply prints out the information saved within the Hashmap.
 
 ***Question 3*** <br>
 > Extend your program again such that the user can provide any two stops on the subway routes you listed for question 1.
 > List a rail route you could travel to get from one stop to the other. We will not evaluate your solution based upon the efficiency or cleverness of your route-finding solution. Pick a simple solution that answers the question. We will want you to understand and be able to explain how your algorithm performs.
 
-This problem relied on the connecting stop functionality. The program reads in the two stops that were given by the user and then determines if they are connected through the saved arrays. If they are not, the program will find a route the both of these routes connect to.
+This problem relied on the connecting stop functionality. Using the connectingStops hashmap contained within each Route object, the program determines if the two given stops are on the same route or routes that are connected. If they are not, the program loops through each Route's connections until it find another route(s) that both given routes connect to.
