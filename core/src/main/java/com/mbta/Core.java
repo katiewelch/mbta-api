@@ -76,7 +76,6 @@ public class Core {
      */
     void addConnectingStop(Stop stop, Route route1){
         if (connectingStops.containsKey(stop.getName())) {
-            //TODO: add functionality for stops that connect 3 lines
             Route route2 = connectingStops.get(stop.getName()).get(0);
 
             //each respective route's index in route variable, index is used to find route's stops in stops matrix

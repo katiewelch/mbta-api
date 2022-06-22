@@ -125,10 +125,4 @@ public class WrapperTest
             assertTrue(mattapanStopID.contains(wAns.mattapanStopsIDAns.get(j)));
         }
     }
-
-    //TODO
-    @Test 
-    public void requestTest() {
-        assertTrue(true);
-    }
 }

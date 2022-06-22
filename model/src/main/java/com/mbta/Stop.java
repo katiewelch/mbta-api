@@ -1,7 +1,5 @@
 package com.mbta;
 
-import javax.print.DocFlavor.STRING;
-
 /*
  * Class that represents MBTA stop
  *  * id (String) - the id of the stop from the API

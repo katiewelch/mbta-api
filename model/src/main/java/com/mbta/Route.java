@@ -14,8 +14,6 @@ import java.util.Map.Entry;
 public class Route {
     String name;
     String id;
-    //TODO i don't think this needs to be a list of Strings for the stops
-    //TODO also why does the route need this, it can be found in the core class, or the core class doesn't need it, probs the latter
     HashMap<Route, ArrayList<String>> connectingStops;
 
     public Route(String n, String ID) {
@@ -44,7 +42,6 @@ public class Route {
     //determines if given route is connected to this route
     public boolean connectsTo(Route r) {
         Iterator<Entry<Route, ArrayList<String>>> itr = connectingStops.entrySet().iterator();
-    //TODO what should it do if it is given itself? probably return true, but what happens if someone sends that route to getConneccitngSTops() -- bad stuff
 
         while(itr.hasNext())
         {
@@ -56,9 +53,8 @@ public class Route {
     }
 
     /*
-     * returns stop(s) that connects this route to given route, if any TODO update this note is i change connectingStops hashmap
+     * returns stop(s) that connects this route to given route, if any
      * connectsTo(Route r) should be called before this to ensure conneciton exists
-     * TODO should this dail is connection doesn't exist
      */
     public ArrayList<String> getConnectingStopValue(Route route) {
         return connectingStops.get(route);

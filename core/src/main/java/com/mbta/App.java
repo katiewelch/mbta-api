@@ -19,7 +19,9 @@ public class App
     + "2.1: Subway route with most stops\n"
     + "2.2: Subway route with least stops\n"
     + "2.3: List of stops connecting 2 or more routes\n"
-    + "3: Directions\n";
+    + "3: Directions\n"
+    + "o: Show options\n"
+    + "e: Exit\n";
     static Scanner in = new Scanner(System.in);
     static String input;
 
@@ -36,7 +38,7 @@ public class App
         while(true) {
             input = in.nextLine();
             decode(input, model);
-            System.out.println("\n");
+            System.out.print("\n");
         }
     }
 
@@ -88,6 +90,9 @@ public class App
                 System.out.println(departing + " to " + arriving + m.getDirections(dRoute, aRoute));
                 break;
 
+            case "e":
+                System.exit(0);
+                break;
             default: //incorrect input
                 System.out.println("Incorrect entry -- Please try again. Enter 'o' for options");
                 break;
