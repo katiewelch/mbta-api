@@ -1,11 +1,4 @@
 # MBTA API
-TODO
-general organzing
-    same fonts boldness etc for classes, methods, variables
-make diagram of classes
-move wrapper section above core
-draw indices for stop and routes
-
 
 ## Overview
 This program communicates with the [MBTA's](https://mbta.com/) [API](https://api-v3.mbta.com/docs/swagger/index.html#/) to parse data and create a command line interface where users can get information regarding routes and stops.
@@ -37,7 +30,7 @@ The decode method deals with all command line input from the user. The command l
 
 The method runs a switch loop that calls the correct method in either the core (fetch data) or the model (compute data) and prints out the answer to the command line. If an incorrect option is entered, the user will get an error message and can input a new option code.
 
-**Core**
+**Core** <br>
 The Core and App classes work together to act as a controller for the program. The App class focuses on the front end and communicating between the user and the program while the Core acts as the main controller for the backend mediating communication between the data, the Wrapper (API), and the Model.
 
 *parseRoutes()* <br>
@@ -75,10 +68,6 @@ This class represents an MBTA stop. It holds the name and ID of the stop as well
 
 ## Development
 This program was built as a multi-module maven project. Each module has its own functionality, separate from other modules. The Wrapper module's function is to interact with the API and return the correct data to the other modules. The Model contains most of the main functionality of the program by analyzing and computing the data based on the available command line options. The Core acts as the controller mediating communication between itself, the user, the model, and the wrapper. Because of this, the Core has dependencies for the model and the wrapper in its pom.xml file.
-
-## how to run
-running 
-options
 
 ## Questions
 ***Question 1*** <br>
